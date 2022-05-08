@@ -1,16 +1,23 @@
 {% extends 'base.html'%}
 {% block content %}
-<table class="table table-striped table-hover">
+<h3>Menu Items and Recipes</h3>
+<a href="{% url 'menu_create' %}">+Add New Recipe+<a>
+<table class="table table-striped">
   <tr>
-    <th>Menu item</th>
     <th>Price</th>
+    <th>Menu item</th>
     <th>Ingredients</th>
+    <th>Delete<th>
   </tr>
   {% for item in menuitems %}
   <tr>
-    <td>{{item.title}}</td>
     <td>${{item.price|floatformat:2}}</td>
-    <td></td>
+    <td><a href="{% url 'menu_update' item.id %}">{{item.title}}</a></td>
+    <td>{% for req in reqs %}
+          <p>{{req.quantity}} {{req.ingredient.unit|lower}} {{req.ingredient.name}}</p>
+        {% endfor %}
+    </td>
+    <td><a href="{% url 'menu_delete' item.id %}">X</a></td>
   </tr>
   {% endfor %}
 </table>

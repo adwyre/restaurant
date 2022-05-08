@@ -4,3 +4,8 @@ nav {
 h1 {
   color: DarkSlateBlue;
 }
+
+a {
+  text-decoration: none;
+  color: black;
+}
