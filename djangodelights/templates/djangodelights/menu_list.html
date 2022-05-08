@@ -1,24 +1,28 @@
 {% extends 'base.html'%}
+{% load static %}
 {% block content %}
 <h3>Menu Items and Recipes</h3>
-<a href="{% url 'menu_create' %}">+Add New Recipe+<a>
 <table class="table table-striped">
   <tr>
     <th>Price</th>
     <th>Menu item</th>
-    <th>Ingredients</th>
-    <th>Delete<th>
+    <th>Ingredient Requirements</th>
+    <th>Delete</th>
   </tr>
   {% for item in menuitems %}
   <tr>
     <td>${{item.price|floatformat:2}}</td>
     <td><a href="{% url 'menu_update' item.id %}">{{item.title}}</a></td>
     <td>{% for req in reqs %}
-          <p>{{req.quantity}} {{req.ingredient.unit|lower}} {{req.ingredient.name}}</p>
+          {% if req.menu_item.title == item.title %}
+            <p><a href="{% url 'recipe_update' req.id %}">{{req.quantity}} {{req.ingredient.unit|lower}} {{req.ingredient.name}}</a><a href="{% url 'recipe_delete' req.id %}"> ✖️</a></p>
+          {% endif %}
         {% endfor %}
+        <p><a class="btn btn-outline-dark" href="{% url 'recipe_create' %}">Add Ingredient</a></p>
     </td>
-    <td><a href="{% url 'menu_delete' item.id %}">X</a></td>
+    <td><a href="{% url 'recipe_delete' item.id %}">✖️</a></td>
   </tr>
   {% endfor %}
 </table>
+<a class="btn btn-outline-dark" href="{% url 'menu_create' %}">Add New Menu Item<a>
 {% endblock %}

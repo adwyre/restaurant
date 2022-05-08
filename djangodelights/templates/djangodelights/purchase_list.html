@@ -1,0 +1,18 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<h3>Purchases</h3>
+<table class="table table-striped">
+  <tr>
+    <th>Date/Time</th>
+    <th>Menu item</th>
+  </tr>
+  {% for purchase in purchases %}
+  <tr>
+    <td>{{purchase.timestamp}}</td>
+    <td>{{purchase.menu_item.title}}</td>
+  </tr>
+  {% endfor %}
+</table>
+<a class="btn btn-outline-dark" href="{% url 'purchase_create' %}">Add New Purchase<a>
+{% endblock %}

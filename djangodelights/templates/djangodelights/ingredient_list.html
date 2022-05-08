@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<h3>Inventory of Ingredients</h3>
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Quantity</th>
+    <th>Unit</th>
+    <th>Price</th>
+    <th>Delete</th>
+  </tr>
+  {% for ingredient in ingredients %}
+  <tr>
+    <td><a href="{% url 'ingredient_update' ingredient.id %}">{{ingredient.name}}</a></td>
+    <td>{{ingredient.quantity}}</td>
+    <td>{{ingredient.unit|lower}}</td>
+    <td>${{ingredient.unit_price|floatformat:2}}</td>
+    <td><a href="{% url 'ingredient_delete' ingredient.id %}">✖️</a></td>
+  </tr>
+  {% endfor %}
+</table>
+<a class="btn btn-outline-dark" href="{% url 'ingredient_create' %}">Add New Ingredient<a>
+{% endblock %}
