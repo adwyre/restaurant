@@ -13,7 +13,7 @@
         <title></title>
     </head>
     <body class="main">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-danger bg-opacity-50">
+      <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
           <a class="navbar-brand" href="{% url 'index' %}">Django Delights</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-              <li></li>
+              <li><a class="nav-item" href="{% url 'menu_list' %}">Menu</a></li>
             </ul>
           </div>
         </div>
