@@ -21,10 +21,16 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+              {% if user.is_authenticated %}
               <li class="nav-item"><a class="nav-link" href="{% url 'menu_list' %}">Menu</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'ingredient_list' %}">Inventory</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'purchase_list' %}">Purchase</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'report' %}">Reports</a></li>
+              <li> <a class="btn btn-outline-dark" href="{% url 'logout' %}">Log Out</a></li>
+              {% else %}
+              <li>
+              <a class="nav-item" href="{% url 'signup' %}">Sign Up</a></li>
+              {% endif %}
             </ul>
           </div>
         </div>

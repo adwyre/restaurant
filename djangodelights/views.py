@@ -3,8 +3,14 @@ from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import MenuItem, Ingredient, RecipeRequirement, Purchase
 from .forms import MenuForm, RecipeForm, IngredientForm, PurchaseForm
-# Create your views here.
-class IndexView(TemplateView):
+# Login/out
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import logout
+
+class IndexView(LoginRequiredMixin, TemplateView):
     template_name = "djangodelights/index.html"
 
     def get_context_data(self):
@@ -15,7 +21,7 @@ class IndexView(TemplateView):
         context["purchases"] = Purchase.objects.all()
         return context
 
-class MenuListView(ListView):
+class MenuListView(LoginRequiredMixin, ListView):
     model = MenuItem
     template_name = "djangodelights/menu_list.html"
 
@@ -24,33 +30,33 @@ class MenuListView(ListView):
         context["menuitems"] = MenuItem.objects.all()
         context["reqs"] = RecipeRequirement.objects.all()
         return context
-class MenuCreateView(CreateView):
+class MenuCreateView(LoginRequiredMixin, CreateView):
     model = MenuItem
     template_name = "djangodelights/menu_create.html"
     form_class = MenuForm
-class MenuUpdateView(UpdateView):
+class MenuUpdateView(LoginRequiredMixin, UpdateView):
     model = MenuItem
     template_name = "djangodelights/menu_update.html"
     form_class = MenuForm
-class MenuDeleteView(DeleteView):
+class MenuDeleteView(LoginRequiredMixin, DeleteView):
     model = MenuItem
     template_name = "djangodelights/menu_delete.html"
     success_url = "/menu"
 
-class RecipeCreateView(CreateView):
+class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = RecipeRequirement
     template_name = "djangodelights/recipe_create.html"
     form_class = RecipeForm
-class RecipeUpdateView(UpdateView):
+class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     model = RecipeRequirement
     template_name = "djangodelights/recipe_update.html"
     form_class = RecipeForm
-class RecipeDeleteView(DeleteView):
+class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     model = RecipeRequirement
     template_name = "djangodelights/recipe_delete.html"
     success_url = "/menu"
 
-class IngredientListView(ListView):
+class IngredientListView(LoginRequiredMixin, ListView):
     model = Ingredient
     template_name = "djangodelights/ingredient_list.html"
 
@@ -58,20 +64,20 @@ class IngredientListView(ListView):
         context = super().get_context_data()
         context["ingredients"] = Ingredient.objects.all()
         return context
-class IngredientCreateView(CreateView):
+class IngredientCreateView(LoginRequiredMixin, CreateView):
     model = Ingredient
     template_name = "djangodelights/ingredient_create.html"
     form_class = IngredientForm
-class IngredientUpdateView(UpdateView):
+class IngredientUpdateView(LoginRequiredMixin, UpdateView):
     model = Ingredient
     template_name = "djangodelights/ingredient_update.html"
     form_class = IngredientForm
-class IngredientDeleteView(DeleteView):
+class IngredientDeleteView(LoginRequiredMixin, DeleteView):
     model = Ingredient
     template_name = "djangodelights/ingredient_delete.html"
     success_url = "/ingredient"
 
-class PurchaseListView(ListView):
+class PurchaseListView(LoginRequiredMixin, ListView):
     model = Purchase
     template_name = "djangodelights/purchase_list.html"
 
@@ -79,7 +85,7 @@ class PurchaseListView(ListView):
         context = super().get_context_data()
         context["purchases"] = Purchase.objects.all()
         return context
-class PurchaseCreateView(TemplateView):
+class PurchaseCreateView(LoginRequiredMixin, TemplateView):
     model = Purchase
     template_name = "djangodelights/purchase_create.html"
     form_class = PurchaseForm
@@ -101,7 +107,7 @@ class PurchaseCreateView(TemplateView):
         purchase.save()
         return redirect("/purchase")
 
-class ReportView(TemplateView):
+class ReportView(LoginRequiredMixin, TemplateView):
     template_name = "djangodelights/report.html"
 
     def get_context_data(self):
@@ -111,3 +117,8 @@ class ReportView(TemplateView):
         context["costs"] = [purchase.cost() for purchase in Purchase.objects.all()]
         context["profit"] = sum([purchase.profit() for purchase in Purchase.objects.all()])
         return context
+
+class SignUp(CreateView):
+  form_class = UserCreationForm
+  success_url = reverse_lazy("login")
+  template_name = "registration/signup.html"
