@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import MenuItem, Ingredient, RecipeRequirement, Purchase
@@ -35,8 +35,7 @@ class MenuUpdateView(UpdateView):
 class MenuDeleteView(DeleteView):
     model = MenuItem
     template_name = "djangodelights/menu_delete.html"
-    form_class = MenuForm
-    success_url = "menu_list"
+    success_url = "/menu"
 
 class RecipeCreateView(CreateView):
     model = RecipeRequirement
@@ -49,8 +48,7 @@ class RecipeUpdateView(UpdateView):
 class RecipeDeleteView(DeleteView):
     model = RecipeRequirement
     template_name = "djangodelights/recipe_delete.html"
-    form_class = RecipeForm
-    success_url = "menu_list"
+    success_url = "/menu"
 
 class IngredientListView(ListView):
     model = Ingredient
@@ -71,8 +69,7 @@ class IngredientUpdateView(UpdateView):
 class IngredientDeleteView(DeleteView):
     model = Ingredient
     template_name = "djangodelights/ingredient_delete.html"
-    form_class = IngredientForm
-    success_url = "ingredient_list"
+    success_url = "/ingredient"
 
 class PurchaseListView(ListView):
     model = Purchase
@@ -82,11 +79,35 @@ class PurchaseListView(ListView):
         context = super().get_context_data()
         context["purchases"] = Purchase.objects.all()
         return context
-class PurchaseCreateView(CreateView):
+class PurchaseCreateView(TemplateView):
     model = Purchase
     template_name = "djangodelights/purchase_create.html"
     form_class = PurchaseForm
+
     def get_context_data(self):
         context = super().get_context_data()
-        #context["menu_iems"] = [i for i in MenuItem.objects.all() if i.available()]
+        context["menu_items"] = [item for item in MenuItem.objects.all() if item.available()]
+        return context
+
+    def post(self, request):
+        menu_item_title = request.POST["menu_item"]
+        menu_item = MenuItem.objects.get(title=menu_item_title)
+        reqs = RecipeRequirement.objects.filter(menu_item=menu_item)
+        purchase = Purchase(menu_item=menu_item)
+        # Update ingredient quantity in inventory
+        for req in reqs:
+            req.ingredient.quantity -= req.quantity
+            req.ingredient.save()
+        purchase.save()
+        return redirect("/purchase")
+
+class ReportView(TemplateView):
+    template_name = "djangodelights/report.html"
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["purchases"] = Purchase.objects.all()
+        context["revenues"] = [purchase.revenue() for purchase in Purchase.objects.all()]
+        context["costs"] = [purchase.cost() for purchase in Purchase.objects.all()]
+        context["profit"] = sum([purchase.profit() for purchase in Purchase.objects.all()])
         return context

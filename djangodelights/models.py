@@ -20,6 +20,9 @@ class MenuItem(models.Model):
     def get_absolute_url(self):
         return "/menu"
 
+    def available(self):
+        return all(i.enough() for i in RecipeRequirement.objects.filter(menu_item=self.id))
+
     def __str__(self):
         return f"{self.title}"
 
@@ -43,6 +46,20 @@ class Purchase(models.Model):
 
     def get_absolute_url(self):
         return "/purchase"
+
+    def revenue(self):
+        return self.menu_item.price
+
+    def cost(self):
+        total = 0
+        reqs = RecipeRequirement.objects.filter(menu_item=self.menu_item.id)
+        for req in reqs:
+            price = req.quantity * req.ingredient.unit_price
+            total += price
+        return total
+
+    def profit(self):
+        return self.revenue() - self.cost()
 
     def __str__(self):
         return f"menu_item={self.menu_item.title}; timestamp={self.timestamp}"

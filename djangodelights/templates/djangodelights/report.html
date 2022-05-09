@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<h3>Reports</h3>
+<div class="container-fluid">
+  <div class="alert alert-dark" role="alert">
+  Current Profit: {{profit|floatformat:2}}
+  </div>
+  <div class="row align-items-center">
+    <div class="col-2"></div>
+    <div class="col-4">
+      <h4>Revenue</h4>
+      <table class="table table-success table-striped">
+        <tr>
+          <th>Amount</th>
+        </tr>
+        {% for revenue in revenues %}
+        <tr>
+          <td>+{{revenue}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+      <div class="col-4">
+      <h4>Costs</h4>
+      <table class="table table-danger table-striped">
+        <tr>
+          <th>Amount</th>
+        </tr>
+        {% for cost in costs %}
+        <tr>
+          <td>-{{cost|floatformat:2}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      </div>
+      <div class="col-2"></div>
+  </div>
+{% endblock %}

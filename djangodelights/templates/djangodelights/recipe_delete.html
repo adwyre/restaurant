@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <h2>Delete Menu Item</h2>
-<form method="post">
+<form action="" method="post">
   {% csrf_token %}
   <p>Are you sure you want to delete "{{ object.ingredient.name }}" from "{{object.menu_item.title}}"?</p>
   <input type="submit" value="Confirm" />

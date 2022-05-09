@@ -4,8 +4,13 @@
 <form method="post">
   <div>
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
+    <label for="menu_item">Menu Item:</label>
+    <select name="menu_item" id="menu_item">
+      <option value selected>----------</option>
+      {% for item in menu_items %}
+      <option value="{{item.title}}">{{item.title}}</option>
+      {% endfor %}
+    <input type="submit" value="Add Purchase"/>
   </div>
 </form>
 {% endblock %}

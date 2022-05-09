@@ -16,4 +16,5 @@ urlpatterns = [
     path("ingredient/delete/<pk>", views.IngredientDeleteView.as_view(), name="ingredient_delete"),
     path("purchase/", views.PurchaseListView.as_view(), name="purchase_list"),
     path("purchase/create/", views.PurchaseCreateView.as_view(), name="purchase_create"),
+    path("report/", views.ReportView.as_view(), name="report"),
 ]
