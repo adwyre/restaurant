@@ -2,6 +2,9 @@
 {% load static %}
 {% block content %}
 <form method="post">
+  <div class="d-flex justify-content-center">
+    <h4>Enter Purchase:</h4>
+  </div>
   <div>
     {% csrf_token %}
     <label for="menu_item">Menu Item:</label>
@@ -10,7 +13,7 @@
       {% for item in menu_items %}
       <option value="{{item.title}}">{{item.title}}</option>
       {% endfor %}
-    <input type="submit" value="Add Purchase"/>
+    <input id="purchase-btn" class="btn btn-primary btn-lg" type="submit" value="Add Purchase" />
   </div>
 </form>
 {% endblock %}

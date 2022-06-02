@@ -1,10 +1,14 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content %}
-<h2>Delete Menu Item</h2>
 <form action="" method="post">
-  {% csrf_token %}
-  <p>Are you sure you want to delete "{{ object.name }}"?</p>
-  <input type="submit" value="Confirm" />
+  <div class="d-flex justify-content-center">
+    <h4>Delete Ingredient from Inventory:</h4>
+  </div>
+  <div>
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ object.name }}"?</p>
+    <input class="btn btn-primary btn-lg" type="submit" value="Confirm" />
+</div>
 </form>
 {% endblock %}

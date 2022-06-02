@@ -2,10 +2,13 @@
 {% load static %}
 {% block content %}
 <form method="post">
+  <div class="d-flex justify-content-center">
+    <h4>Update Ingredent in Inventory:</h4>
+  </div>
   <div>
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Update" />
+    <input class="btn btn-primary btn-lg" type="submit" value="Update" />
   </div>
 </form>
 {% endblock %}

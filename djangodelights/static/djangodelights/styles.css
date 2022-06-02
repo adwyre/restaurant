@@ -1,11 +1,50 @@
-nav {
-  background-color: MediumSlateBlue;
+html {
+  font-family: "IBM Plex Sans", sans-serif;
 }
-h1 {
-  color: DarkSlateBlue;
-}
-
 a {
   text-decoration: none;
-  color: black;
+}
+.navbar-brand {
+  font-family: Lobster, cursive;
+  font-size: 1.7rem;
+}
+.navbar-nav {
+  flex-direction: row;
+}
+.navbar-nav li {
+  padding-right: 1rem;
+}
+form {
+  display: block;
+  justify-content: center;
+  align-content: center;
+  margin: 5rem 40%;
+}
+form div {
+  display: block;
+  justify-content: center;
+}
+form ul {
+  list-style-type: none;
+}
+form label {
+  text-align: right;
+  width: 6rem;
+}
+form input.btn {
+  margin-left: 6rem;
+}
+#purchase-btn {
+  margin-top: 15px;
+}
+h1 {
+  font-family: Lobster, cursive;
+  font-size: 6rem;
+}
+div img {
+  width: 100px;
+  height: 100px;
+}
+h3 {
+  margin: 15px;
 }
